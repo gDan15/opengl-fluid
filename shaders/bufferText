@@ -1,0 +1,18 @@
+if(p.y < yAxisL || p.y > yAxisH) {
+  if(p.y < yAxisL){
+    p.y = yAxisL;
+    v.y = -v.y;
+  }else{
+    p.y = yAxisH;
+    v.y = -v.y;
+  }
+}
+if(p.x > xAxisH || p.x < xAxisL){
+  if(p.x < xAxisL){
+    p.x = xAxisL;
+    v.x = -v.x;
+  }else{
+    p.x = xAxisH;
+    v.x = -v.x;
+  }
+}

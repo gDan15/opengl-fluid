@@ -27,7 +27,7 @@ private:
     Computer* computer = NULL;
     Buffer* particules = NULL;
     Buffer* velocities = NULL;
-
+    int numberParticles= 20000/2;
 public:
     Simulator(int argc, char* argv[]);
     void update(int time);
@@ -40,31 +40,41 @@ Simulator::Simulator(int argc, char* argv[]) : Application(argc, argv) {}
 
 void Simulator::update(int elapsedTime)
 {
-    computer->compute(50, 1, 1);
+    computer->compute(numberParticles/8, 1, 1);
 }
 
 void Simulator::render()
 {
-     renderer->render(PRIMITIVE_POINTS, 200  );
-     axeRenderer->indexedRender(PRIMITIVE_LINES, 12);
+     renderer->render(PRIMITIVE_POINTS, numberParticles  );
+     axeRenderer->indexedRender(PRIMITIVE_LINES, 24);
 }
 void Simulator::setup()
 {
     int x,y,z;
+    int reduce=3;
     x=8;
     y=8;
     z=12;
     // void srand(int seed);
     vector<Particule> vectParticule;
-    for(int a = 0; a < 200; a = a + 1){
+    for(int a = 0; a < numberParticles; a = a + 1){
+      if(0<y<=2){
+        reduce=1;
+      }
+      else if(2< y <= 4){
+        reduce=20;
+      }
+      else{
+        reduce=30;
+      }
       vectParticule.push_back(
         Particule(
-          vec3((x-8),(y-8),(z-12)),
-          vec3(rand() % 12,rand() % 12,rand() % 12)
+          vec3(0,0,0),
+          vec3(rand()*a%12,rand()*a%12,rand()*a%12)
           // vec3(0,0,0)
         )
       );
-      // cout << rand() << endl;
+      // cout << (float)((rand() % 12)/reduce) << endl;
     }
     // empty vector of ints
     setClearColor(0.95f, 0.95f, 0.95f, 1.0f);
@@ -105,14 +115,14 @@ void Simulator::setup()
     axeRenderer->setVertexData("vertex", axeBuffer, TYPE_FLOAT, 0, 3, sizeof(vec3));
     axeRenderer->index(axeIndexBuffer);
 
-    mat4 projection = perspective(90.0f, 640.0/480.0, 0.1, 20);
+    mat4 projection = perspective(90.0f, 640.0/480.0, 0.1, 100);
 
     // camera angle
     // double w=pow(2,0.5);
     double w = 1/2;
     // Camera coordonates, where the camera looks
     // mat4 view = lookat(vec3(-10, 4, -5), vec3(0, 0, 0), vec3(0, 1, 0));
-    mat4 view = lookat(vec3(15, 4, -10), vec3(0, 3, 0), vec3(0, 1, 0));
+    mat4 view = lookat(vec3(15, 5, -10), vec3(0, 3, 0), vec3(0, 1, 0));
     // mat4 view = lookat(vec3(0, 0, -10), vec3(0, 0, 0), vec3(0, 1, 0));
     // mat4 view = lookat(vec3(25, 0, 0), vec3(0, 0, 0), vec3(0, 1, 0));
     // mat4 view = lookat(vec3(0, 0, -5), vec3(0, 0, 0), vec3(0, 1, 0));
