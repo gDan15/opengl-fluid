@@ -10,10 +10,12 @@ struct Particule
 {
     vec4 position;
     vec4 velocity;
+    // vec4 size;
     Particule(vec3 pos, vec3 vel)
     {
         position = vec4(pos[0], pos[1], pos[2], 1.0f);
         velocity = vec4(vel[0], vel[1], vel[2], 1.0f);
+        // size = vec4(siz[0], siz[1], siz[2], 1.0f);
     }
 };
 
@@ -45,7 +47,7 @@ void Simulator::update(int elapsedTime)
 
 void Simulator::render()
 {
-     renderer->render(PRIMITIVE_POINTS, numberParticles  );
+     renderer->render(PRIMITIVE_POINTS, numberParticles);
      axeRenderer->indexedRender(PRIMITIVE_LINES, 24);
 }
 void Simulator::setup()
@@ -55,22 +57,15 @@ void Simulator::setup()
     x=8;
     y=8;
     z=12;
+    int nbrLevels=numberParticles/x;
     // void srand(int seed);
     vector<Particule> vectParticule;
     for(int a = 0; a < numberParticles; a = a + 1){
-      if(0<y<=2){
-        reduce=1;
-      }
-      else if(2< y <= 4){
-        reduce=20;
-      }
-      else{
-        reduce=30;
-      }
       vectParticule.push_back(
         Particule(
-          vec3(0,0,0),
+          vec3(x/2,y,a/nbrLevels),
           vec3(rand()*a%12,rand()*a%12,rand()*a%12)
+          // vec3(5,5,5)
           // vec3(0,0,0)
         )
       );
@@ -122,7 +117,7 @@ void Simulator::setup()
     double w = 1/2;
     // Camera coordonates, where the camera looks
     // mat4 view = lookat(vec3(-10, 4, -5), vec3(0, 0, 0), vec3(0, 1, 0));
-    mat4 view = lookat(vec3(15, 5, -10), vec3(0, 3, 0), vec3(0, 1, 0));
+    mat4 view = lookat(vec3(15, 13, -10), vec3(0, 3, 0), vec3(0, 1, 0));
     // mat4 view = lookat(vec3(0, 0, -10), vec3(0, 0, 0), vec3(0, 1, 0));
     // mat4 view = lookat(vec3(25, 0, 0), vec3(0, 0, 0), vec3(0, 1, 0));
     // mat4 view = lookat(vec3(0, 0, -5), vec3(0, 0, 0), vec3(0, 1, 0));
