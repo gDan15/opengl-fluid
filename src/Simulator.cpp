@@ -29,7 +29,7 @@ private:
     Computer* computer = NULL;
     Buffer* particules = NULL;
     Buffer* velocities = NULL;
-    int numberParticles= 20000/2;
+    int numberParticles= 50000;
 public:
     Simulator(int argc, char* argv[]);
     void update(int time);
@@ -42,7 +42,7 @@ Simulator::Simulator(int argc, char* argv[]) : Application(argc, argv) {}
 
 void Simulator::update(int elapsedTime)
 {
-    computer->compute(numberParticles/8, 1, 1);
+    computer->compute(numberParticles/4, 1, 1);
 }
 
 void Simulator::render()
@@ -54,17 +54,17 @@ void Simulator::setup()
 {
     int x,y,z;
     int reduce=3;
-    x=8;
+    x=10;
     y=8;
     z=12;
-    int nbrLevels=numberParticles/x;
+    float nbrLevels=numberParticles/z;
     // void srand(int seed);
     vector<Particule> vectParticule;
     for(int a = 0; a < numberParticles; a = a + 1){
       vectParticule.push_back(
         Particule(
-          vec3(x/2,y,a/nbrLevels),
-          vec3(rand()*a%12,rand()*a%12,rand()*a%12)
+          vec3(x/2,y,(int) a/nbrLevels),
+          vec3(rand()*a%12+10,-rand()*a%12,rand()*a%12)
           // vec3(5,5,5)
           // vec3(0,0,0)
         )
@@ -89,11 +89,10 @@ void Simulator::setup()
         //6
         vec3(0, y, z),
         vec3(x, y, z)
-
     };
     Buffer* axeBuffer = new Buffer(axe, 8*sizeof(vec3));
     // permet d'obtenir les axes du repère en fonction des vec3
-    // axe xyz, face devant, face droite, face derrière, face gauche
+    // axe xyz, face avant, face droite, face arrière, face gauche
     GUInt axeIndex[] = {0,1,0,2,0,3,1,4,4,2, 2,6,6,3, 3,5,5,7,7,6, 7,4,5,1};
     Buffer* axeIndexBuffer = new Buffer(axeIndex, 24*sizeof(GUInt));
 

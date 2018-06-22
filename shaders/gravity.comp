@@ -21,8 +21,9 @@ void main()
 
     v += (1.0/60.0) * vec3(0, -9.81, 0);
     p += (1.0/60.0) * v;
+    
     float coefficient=0;
-    int xAxisH = 8;
+    int xAxisH = 10;
     int xAxisL = 0;
 
     int yAxisH = 8;
